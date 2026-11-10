@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using YARG.Core;
@@ -29,10 +30,10 @@ namespace YARG.Gameplay
         private GuidePitchManager _guidePitchManager;
 
         public double TimeStart { get; private set; }
-        public double TimeEnd   { get; private set; }
+        public double TimeEnd { get; private set; }
 
-        private uint   _sectionStartTick;
-        private uint   _sectionEndTick;
+        private uint _sectionStartTick;
+        private uint _sectionEndTick;
         private double _sectionStartTime;
         private double _sectionEndTime;
 
@@ -41,7 +42,7 @@ namespace YARG.Gameplay
 
         private uint _lastTick;
 
-        public bool HasSelectedSection    { get; private set; }
+        public bool HasSelectedSection { get; private set; }
         public bool HasUpdatedAbPositions { get; private set; }
 
         private void Start()
@@ -250,14 +251,13 @@ namespace YARG.Gameplay
 
         public void SetBPosition(double time)
         {
-            // We do this because we want to snap to the exact time of a tick, not in between 2 ticks.
             uint tick = _chart.SyncTrack.TimeToTick(time);
             double endTime = _chart.SyncTrack.TickToTime(tick);
 
             _tickEnd = tick;
             TimeEnd = endTime;
 
-            if(TimeEnd < TimeStart)
+            if (TimeEnd < TimeStart)
             {
                 TimeEnd = TimeStart;
                 _tickEnd = _tickStart;
@@ -277,7 +277,7 @@ namespace YARG.Gameplay
             HasUpdatedAbPositions = true;
         }
 
-        public void ResetPractice()
+        public void ResetPractice(bool isSeamless = false)
         {
             _practiceHud.ResetPractice();
 
@@ -314,6 +314,43 @@ namespace YARG.Gameplay
             return sections[0].Time <= time
                 ? sections.Last(s => s.Time <= time)
                 : sections[0];
+        }
+
+        // =========================================================
+        // BAR/MEASURE FUNCTIONALITY
+        // =========================================================
+
+        public int GetBarAtTime(double time)
+        {
+            if (_chart == null || _chart.SyncTrack == null)
+                return 0;
+
+            return (int) _chart.SyncTrack.GetMeasurePosition(time);
+        }
+
+        public double GetTimeAtBar(int barIndex)
+        {
+            if (_chart == null || _chart.SyncTrack == null || barIndex < 0)
+                return 0.0;
+
+            int currentBar = 0;
+            double lastMeasureTime = 0.0;
+
+            foreach (var beatline in _chart.SyncTrack.Beatlines)
+            {
+                if (beatline.Type == BeatlineType.Measure)
+                {
+                    lastMeasureTime = beatline.Time;
+
+                    if (currentBar == barIndex)
+                    {
+                        return lastMeasureTime;
+                    }
+                    currentBar++;
+                }
+            }
+
+            return lastMeasureTime;
         }
     }
 }

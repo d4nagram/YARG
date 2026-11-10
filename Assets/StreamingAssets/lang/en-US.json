@@ -1652,6 +1652,14 @@
                 "Name": "Practice Restart Delay",
                 "Description": "The amount of time (in seconds) to delay the beginning of a section in Practice Mode."
             },
+             "UseMeasureSnapping": {
+                "Name": "Use Measure Snapping",
+                "Description": "Snap A/B sections to nearest measure in Practice Mode.",
+                "Dropdown": {
+                    "Measures": "Measure",
+                    "Time": "Time"
+                }
+            },
             "PreviewVolume": {
                 "Name": "Preview Volume",
                 "Description": "The preview volume while in the music library."

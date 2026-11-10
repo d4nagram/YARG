@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,6 +71,7 @@ namespace YARG.Settings
                 nameof(Settings.VoiceActivatedVocalStarPower),
                 nameof(Settings.EnablePracticeSP),
                 nameof(Settings.PracticeRestartDelay),
+                nameof(Settings.UseMeasureSnapping),
                 nameof(Settings.NoFail),
                 nameof(Settings.LearningGuides),
                 nameof(Settings.ReduceNoteSpeedByDifficulty),

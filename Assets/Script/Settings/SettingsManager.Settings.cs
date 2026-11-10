@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -267,6 +267,8 @@ namespace YARG.Settings
             public ToggleSetting EnablePracticeSP { get; } = new(false);
             public SliderSetting PracticeRestartDelay { get; } = new(2f, 0.5f, 5f);
 
+            public ToggleSetting UseMeasureSnapping { get; } = new(true);
+            
             public ToggleSetting ShowBattery { get; } = new(false, ShowBatteryCallback);
             public ToggleSetting ShowTime { get; } = new(false, ShowTimeCallback);
             public ToggleSetting MemoryStats { get; } = new(false, MemoryStatsCallback);
